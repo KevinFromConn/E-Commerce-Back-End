@@ -29,7 +29,7 @@ router.get("/:id", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
-    })
+    });
 });
 
 router.post("/", (req, res) => {
@@ -43,18 +43,22 @@ router.post("/", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
-    })
+    });
 });
 
 router.put("/:id", (req, res) => {
   // update a category by its `id` value
-  db.Category.update({
-    id: req.body.id,
-    category_name: req.body.category_name,
-    where: {
-      id: req.params.id,
+  db.Category.update(
+    {
+      id: req.body.id,
+      category_name: req.body.category_name,
     },
-  })
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
     .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
       console.log(err);
