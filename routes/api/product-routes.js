@@ -1,23 +1,14 @@
 const router = require("express").Router();
-const { Product, Category, Tag, ProductTag } = require("../../models");
+const db = require("../../models");
 
 // The `/api/products` endpoint
 
 // get all products
-router.get("/api/products", (req, res) => {
+router.get("/", (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
-  Product.findAll({
-    include: [
-      {
-        model: Category,
-        attributes: ["id", "category_name"],
-      },
-      {
-        model: Tag,
-        attributes: ["id", "tag_name"],
-      },
-    ],
+  db.Product.findAll({
+    include: [db.Category, db.Tag],
   })
     .then((dbProductData) => res.json(dbProductData))
     .catch((err) => {
@@ -27,20 +18,11 @@ router.get("/api/products", (req, res) => {
 });
 
 // get one product
-router.get("/api/products/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  Product.findOne({
-    include: [
-      {
-        model: Category,
-        attributes: ["id", "category_name"],
-      },
-      {
-        model: Tag,
-        attributes: ["id", "tag_name"],
-      },
-    ],
+  db.Product.findOne({
+    include: [db.Category, db.Tag],
   })
     .then((dbProductData) => res.json(dbProductData))
     .catch((err) => {
@@ -50,7 +32,7 @@ router.get("/api/products/:id", (req, res) => {
 });
 
 // create new product
-router.post("/api/products", (req, res) => {
+router.post("/", (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -60,7 +42,7 @@ router.post("/api/products", (req, res) => {
     }
   */
   console.log(req.body);
-  Product.create(req.body)
+  db.Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -83,9 +65,9 @@ router.post("/api/products", (req, res) => {
 });
 
 // update product
-router.put("/api/products/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   // update product data
-  Product.update(req.body, {
+  db.Product.update(req.body, {
     where: {
       id: req.params.id,
     },
@@ -124,9 +106,9 @@ router.put("/api/products/:id", (req, res) => {
     });
 });
 
-router.delete("/api/products/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   // delete one product by its `id` value
-  Product.destroy({
+  db.Product.destroy({
     where: {
       id: req.params.id,
     },

@@ -1,16 +1,13 @@
 const router = require("express").Router();
-const { Category, Product } = require("../../models");
+const db = require("../../models");
 
 // The `/api/categories` endpoint
 
-router.get("/api/categories/", (req, res) => {
+router.get("/", (req, res) => {
   // find all categories
   // be sure to include its associated Products
-  Category.findAll({
-    include: {
-      model: Product,
-      attributes: ["id", "product_name", "price", "stock", "category_id"],
-    },
+  db.Category.findAll({
+    include: [db.Product],
   })
     .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
@@ -19,29 +16,26 @@ router.get("/api/categories/", (req, res) => {
     });
 });
 
-router.get("/api/categories/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
-  Category.findOne({
+  db.Category.findOne({
     where: {
       id: req.params.id,
     },
-    include: {
-      model: Product,
-      attributes: ["id", "product_name", "price", "stock", "category_id"],
-    },
+    include: [db.Product],
   })
     .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
-    });
+    })
 });
 
-router.post("/api/categories", (req, res) => {
+router.post("/", (req, res) => {
   // create a new category
   console.log(req.body);
-  Category.create({
+  db.Category.create({
     id: req.body.id,
     category_name: req.body.category_name,
   })
@@ -49,12 +43,12 @@ router.post("/api/categories", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
-    });
+    })
 });
 
-router.put("/api/categories/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   // update a category by its `id` value
-  Category.update({
+  db.Category.update({
     id: req.body.id,
     category_name: req.body.category_name,
     where: {
@@ -68,9 +62,9 @@ router.put("/api/categories/:id", (req, res) => {
     });
 });
 
-router.delete("/api/categories/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   // delete a category by its `id` value
-  Category.destroy({
+  db.Category.destroy({
     where: {
       id: req.params.id,
     },
