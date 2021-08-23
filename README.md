@@ -5,7 +5,9 @@ This application will allow users to keep up to date in the fast paced world of 
 # Walkthrough Video
 
 [I accidentally forgot to show how I created the schema through MySQL Shell, and didn't want to have to record the entire video again](https://drive.google.com/file/d/1KLPjh8LJJ6AptjY8VMvcPVJa-e196x7e/view)
+
 ==============================================================================================
+
 [Here is a video showing how to navigate through the application](https://drive.google.com/file/d/1IKFQpc40IDfQMdzALqf92XGtW2lxon_K/view)
 
 ** The video is also included here in the root directory in case the above link does not work as intended **
